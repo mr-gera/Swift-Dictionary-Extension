@@ -52,7 +52,7 @@ extension Dictionary where Key: ExpressibleByStringLiteral, Value: Any
         return nil
     }
     
-    func doubleFor(key: String) -> Double
+    func doubleFor(key: String) -> Double?
     {
         if (self.valueFor(key) as? Double) != nil
         {
@@ -71,7 +71,7 @@ extension Dictionary where Key: ExpressibleByStringLiteral, Value: Any
             }
         }
         
-        return 0;
+        return nil;
     }
     
     func arrayFor(key: String) -> [Any]?
