@@ -42,32 +42,49 @@ extension Dictionary where Key: ExpressibleByStringLiteral, Value: Any
         return nil
     }
     
-    func stringFor(key: String) -> String?
+    func stringFor(key: String) -> String
     {
         if let val = valueFor(key) as? String
         {
             return val;
         }
         
-        return nil
+        if let val = self.intFor(key: key)
+        {
+            return String(val);
+        }
+        
+        if let val = self.doubleFor(key: key)
+        {
+            return String(val);
+        }
+        
+        return ""
+    }
+    
+    func boolForKey(key: String) -> Bool
+    {
+        if let val = self.valueFor(key) as? Bool
+        {
+            return val
+        }
+        
+        let val = stringFor(key: key)
+        
+        return val == "1"
     }
     
     func doubleFor(key: String) -> Double?
     {
-        if (self.valueFor(key) as? Double) != nil
+        if let val = self.valueFor(key) as? Double
         {
-            return self.valueFor(key) as! Double;
+            return val
         }
         else
         {
-            if (self.valueFor(key) as? String) != nil
+            if let valueString = self.valueFor(key) as? String
             {
-                let val = self.valueFor(key) as! String
-                
-                if Double(val) != nil
-                {
-                    return Double(val)!;
-                }
+                return Double(valueString)
             }
         }
         
