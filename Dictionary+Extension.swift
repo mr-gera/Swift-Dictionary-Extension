@@ -93,5 +93,17 @@ extension Dictionary where Key: ExpressibleByStringLiteral, Value: Any
         
         return nil;
     }
+    
+    func dictionaryStringAnyFor(key: String) -> [String:Any]?
+    {
+        if let val = self.valueFor(key) as? [String:Any]
+        {
+            return val
+        }
+        else
+        {
+            return [String:Any]()
+        }
+    }
 
 }
