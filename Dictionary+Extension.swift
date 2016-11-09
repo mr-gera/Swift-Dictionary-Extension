@@ -10,9 +10,34 @@ import UIKit
 
 extension Dictionary where Key: ExpressibleByStringLiteral, Value: Any
 {
+    var jsonString: String
+    {
+        do {
+            let data = try JSONSerialization.data(withJSONObject:self, options:[])
+            let dataString = String(data: data, encoding: String.Encoding.utf8)!
+            return dataString;
+            
+            // do other stuff on success
+            
+        } catch {
+            print("JSON serialization failed:  \(error)")
+        }
+        
+        return "";
+    }
+    
+    func dictionary(obj: Any?) -> [String:Any]
+    {
+        if let dict = obj as? [String:Any]
+        {
+            return dict;
+        }
+        
+        return [String:Any]();
+    }
+    
     func valueFor(_ key: String) -> Any?
     {
-        
         for (keyIn,value) in self
         {
             if let string = keyIn as? String, string == key
