@@ -8,17 +8,22 @@
 
 import UIKit
 
-extension Dictionary where Key: ExpressibleByStringLiteral, Value: Any
-{
-    var jsonString: String
-    {
+extension Dictionary {
+    static func dictionaryStringAny(_ obj: AnyObject?) -> [String:Any]{
+        if let dict = obj as? [String:Any] {
+            return dict;
+        }
+        
+        return [String:Any]();
+    }
+}
+
+extension Dictionary where Key: ExpressibleByStringLiteral, Value: Any{
+    var jsonString: String {
         do {
-            let data = try JSONSerialization.data(withJSONObject:self, options:[])
+            let data = try JSONSerialization.data(withJSONObject:self, options:[.prettyPrinted])
             let dataString = String(data: data, encoding: String.Encoding.utf8)!
             return dataString;
-            
-            // do other stuff on success
-            
         } catch {
             print("JSON serialization failed:  \(error)")
         }
@@ -26,8 +31,7 @@ extension Dictionary where Key: ExpressibleByStringLiteral, Value: Any
         return "";
     }
     
-    func dictionary(obj: Any?) -> [String:Any]
-    {
+    func dictionary(obj: Any?) -> [String:Any] {
         if let dict = obj as? [String:Any]
         {
             return dict;
@@ -36,12 +40,9 @@ extension Dictionary where Key: ExpressibleByStringLiteral, Value: Any
         return [String:Any]();
     }
     
-    func valueFor(_ key: String) -> Any?
-    {
-        for (keyIn,value) in self
-        {
-            if let string = keyIn as? String, string == key
-            {
+    func valueFor(_ key: String) -> Any? {
+        for (keyIn,value) in self {
+            if let string = keyIn as? String, string == key {
                 return value
             }
         }
@@ -49,17 +50,13 @@ extension Dictionary where Key: ExpressibleByStringLiteral, Value: Any
         return nil
     }
     
-    func intFor(key: String) -> Int?
-    {
-        if let val = valueFor(key) as? Int
-        {
+    func intFor(key: String) -> Int? {
+        if let val = valueFor(key) as? Int {
             return val
         }
         
-        if let val = valueFor(key) as? String
-        {
-            if let intVal = Int(val)
-            {
+        if let val = valueFor(key) as? String {
+            if let intVal = Int(val) {
                 return intVal
             }
         }
@@ -67,30 +64,24 @@ extension Dictionary where Key: ExpressibleByStringLiteral, Value: Any
         return nil
     }
     
-    func stringFor(key: String) -> String
-    {
-        if let val = valueFor(key) as? String
-        {
+    func stringFor(key: String) -> String {
+        if let val = valueFor(key) as? String {
             return val;
         }
         
-        if let val = self.intFor(key: key)
-        {
+        if let val = self.intFor(key: key) {
             return String(val);
         }
         
-        if let val = self.doubleFor(key: key)
-        {
+        if let val = self.doubleFor(key: key) {
             return String(val);
         }
         
         return ""
     }
     
-    func boolForKey(key: String) -> Bool
-    {
-        if let val = self.valueFor(key) as? Bool
-        {
+    func boolForKey(key: String) -> Bool {
+        if let val = self.valueFor(key) as? Bool {
             return val
         }
         
@@ -99,51 +90,37 @@ extension Dictionary where Key: ExpressibleByStringLiteral, Value: Any
         return val == "1"
     }
     
-    func doubleFor(key: String) -> Double?
-    {
-        if let val = self.valueFor(key) as? Double
-        {
+    func doubleFor(key: String) -> Double? {
+        if let val = self.valueFor(key) as? Double {
             return val
-        }
-        else
-        {
-            if let valueString = self.valueFor(key) as? String
-            {
+        } else {
+            if let valueString = self.valueFor(key) as? String {
                 return Double(valueString)
             }
-        }
-        
+        }        
         return nil;
     }
     
-    func arrayFor(key: String) -> [Any]?
-    {
-        if let val = self.valueFor(key) as? [Any]
-        {
+    func arrayFor(key: String) -> [Any]? {
+        if let val = self.valueFor(key) as? [Any] {
             return val
         }
         
         return nil;
     }
     
-    func arrayOfDictionariesFor(key: String) -> [[String:Any]]?
-    {
-        if let val = self.valueFor(key) as? [[String:Any]]
-        {
+    func arrayOfDictionariesFor(key: String) -> [[String:Any]]? {
+        if let val = self.valueFor(key) as? [[String:Any]] {
             return val
         }
         
         return nil;
     }
     
-    func dictionaryStringAnyFor(key: String) -> [String:Any]?
-    {
-        if let val = self.valueFor(key) as? [String:Any]
-        {
+    func dictionaryStringAnyFor(key: String) -> [String:Any]? {
+        if let val = self.valueFor(key) as? [String:Any] {
             return val
-        }
-        else
-        {
+        } else {
             return [String:Any]()
         }
     }
